@@ -1,0 +1,46 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const surveyForm = document.getElementById("surveyForm");
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popupContent");
+    const closePopup = document.getElementById("closePopup");
+
+    surveyForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Check if all required fields are filled
+        const requiredFields = document.querySelectorAll("[required]");
+        let isFormValid = true;
+
+        requiredFields.forEach(function (field) {
+            if (field.value.trim() === "") {
+                isFormValid = false;
+                alert("Please fill in all required fields.");
+                return;
+            }
+        });
+
+        if (!isFormValid) {
+            return;
+        }
+
+        // Collect form data and display it in a popup
+        const formData = new FormData(surveyForm);
+        let formDataText = "";
+
+        for (const [key, value] of formData.entries()) {
+            formDataText += key + ": " + value + "\n";
+        }
+
+        popupContent.textContent = formDataText;
+        popup.classList.remove("hidden");
+    });
+
+    document.getElementById("resetButton").addEventListener("click", function () {
+        surveyForm.reset();
+    });
+
+    closePopup.addEventListener("click", function () {
+        popup.classList.add("hidden");
+        surveyForm.reset();
+    });
+});
